@@ -1,8 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
-import type { Data, FoundryBuild, FoundryConfig } from "./types";
+import type { Check, CheckStatus, Data, FoundryBuild, FoundryConfig } from "./types";
 
 const FOUNDRY_URL = "https://ai.azure.com/nextgen";
 const DATA_FILE_PATH = "./data.json";
+const MAX_CHECKS = 168; // 1 week of hourly checks
 
 async function readData(filePath: string): Promise<Data> {
   try {
@@ -14,6 +15,10 @@ async function readData(filePath: string): Promise<Data> {
       data != null &&
       Array.isArray(data.builds)
     ) {
+      // Ensure checks array exists for backward compatibility
+      if (!Array.isArray(data.checks)) {
+        data.checks = [];
+      }
       return data as Data;
     }
     throw new Error("invalid data structure in data.json");
@@ -23,6 +28,7 @@ async function readData(filePath: string): Promise<Data> {
       return {
         lastUpdatedAt: new Date().toISOString(),
         builds: [],
+        checks: [],
       };
     }
     throw error;
@@ -53,27 +59,81 @@ function extractFoundryConfig(html: string): FoundryConfig | undefined {
   return undefined;
 }
 
+function addCheckToData(data: Data, check: Check): void {
+  data.checks.unshift(check);
+  if (data.checks.length > MAX_CHECKS) {
+    data.checks = data.checks.slice(0, MAX_CHECKS);
+  }
+  data.lastUpdatedAt = check.checkedAt;
+}
+
 async function main() {
+  const startTime = Date.now();
   const data = await readData(DATA_FILE_PATH);
 
-  const res = await fetch(FOUNDRY_URL);
+  const createCheck = (
+    status: CheckStatus,
+    extra: Partial<Omit<Check, "checkedAt" | "status" | "durationMs">> = {},
+  ): Check => ({
+    checkedAt: new Date().toISOString(),
+    status,
+    durationMs: Date.now() - startTime,
+    ...extra,
+  });
+
+  let res: Response;
+  try {
+    res = await fetch(FOUNDRY_URL);
+  } catch (error) {
+    const check = createCheck("network_error", {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    addCheckToData(data, check);
+    await writeData(DATA_FILE_PATH, data);
+    console.error(`failed to fetch ${FOUNDRY_URL}:`, error);
+    process.exit(1);
+  }
+
   if (!res.ok) {
+    const check = createCheck("http_error", {
+      httpStatus: res.status,
+      errorMessage: `${res.status} ${res.statusText}`,
+    });
+    addCheckToData(data, check);
+    await writeData(DATA_FILE_PATH, data);
     console.error(
       `failed to fetch ${FOUNDRY_URL}: ${res.status} ${res.statusText}`,
     );
-    return;
+    process.exit(1);
   }
-  const rawHtml = await res.text();
 
+  const rawHtml = await res.text();
   const config = extractFoundryConfig(rawHtml);
 
   console.log("<<config start");
   console.log(config);
   console.log("<<config end");
 
-  if (!config?.environment?.buildNumber) {
-    console.log("fould not find build information");
-    return;
+  if (!config) {
+    const check = createCheck("parse_error", {
+      httpStatus: res.status,
+      errorMessage: "failed to extract config from HTML",
+    });
+    addCheckToData(data, check);
+    await writeData(DATA_FILE_PATH, data);
+    console.error("failed to extract Foundry config from HTML");
+    process.exit(1);
+  }
+
+  if (!config.environment?.buildNumber) {
+    const check = createCheck("missing_build_info", {
+      httpStatus: res.status,
+      errorMessage: "fonfig found but no buildNumber present",
+    });
+    addCheckToData(data, check);
+    await writeData(DATA_FILE_PATH, data);
+    console.log("could not find build information");
+    process.exit(1);
   }
 
   const now = new Date().toISOString();
@@ -83,7 +143,9 @@ async function main() {
     (build) => build.foundryEnv.buildNumber === buildNumber,
   );
 
-  if (existingBuildIndex !== -1) {
+  const isNewBuild = existingBuildIndex === -1;
+
+  if (!isNewBuild) {
     console.log(`build ${buildNumber} already exists`);
     data.builds[existingBuildIndex].lastSeenAt = now;
   } else {
@@ -100,14 +162,33 @@ async function main() {
     data.builds.unshift(newBuild);
   }
 
-  data.lastUpdatedAt = now;
-
+  const check = createCheck("ok", {
+    httpStatus: res.status,
+    buildNumber,
+    isNewBuild,
+  });
+  addCheckToData(data, check);
   await writeData(DATA_FILE_PATH, data);
 
   console.log("done");
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error("unexpected error:", error);
+
+  try {
+    const data = await readData(DATA_FILE_PATH);
+    const check: Check = {
+      checkedAt: new Date().toISOString(),
+      status: "unknown_error",
+      durationMs: 0,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    };
+    addCheckToData(data, check);
+    await writeData(DATA_FILE_PATH, data);
+  } catch {
+    // Ignore errors when trying to save the error state
+  }
+
   process.exit(1);
 });
