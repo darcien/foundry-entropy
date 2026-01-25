@@ -1,1 +1,25 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Iosevka Ese";
+    font-display: swap;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src: url("/fonts/IosevkaEse/WOFF2/IosevkaEse-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Iosevka Ese";
+    font-display: swap;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src: url("/fonts/IosevkaEse/WOFF2/IosevkaEse-Bold.woff2") format("woff2");
+}
+
+:root {
+    --font-mono:
+        "Iosevka Ese", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono",
+        Consolas, "Courier New", monospace;
+}
