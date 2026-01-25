@@ -133,12 +133,12 @@
 	<div class="relative z-10 w-full max-w-4xl">
 		<!-- Top status bar -->
 		<div
-			class="border px-4 py-2 flex justify-between items-center text-xs uppercase tracking-wider mb-6"
+			class="border px-4 py-2 grid grid-cols-3 items-center text-xs uppercase tracking-wider mb-6"
 			style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.05);"
 		>
 			<span style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.6);">[ SYSTEM MONITOR ]</span>
-			<span style="color: rgba(var(--vfd), 0.7); text-shadow: 0 0 6px rgba(var(--vfd), 0.4);">◈ {formatRegion(region)}</span>
-			<span style="color: rgba(var(--vfd), 0.5);">AZURE AI FOUNDRY BUILD TRACKER v0.1</span>
+			<span class="text-center" style="color: rgba(var(--vfd), 0.7); text-shadow: 0 0 6px rgba(var(--vfd), 0.4);">◈ {formatRegion(region)}</span>
+			<span class="text-right" style="color: rgba(var(--vfd), 0.5);">BUILD TRACKER v0.1</span>
 		</div>
 
 		<!-- Main display -->
