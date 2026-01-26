@@ -39,6 +39,8 @@
 		if (charWidth < 1) return;
 
 		// Calculate available width (container width minus padding)
+		// Container has pl-4 (16px left), log entries have pr-4 (16px right)
+		// Total horizontal padding: 16px left + 16px right = 32px
 		const containerWidth = logContainer.clientWidth - 32;
 		if (containerWidth <= 0) return;
 
@@ -364,7 +366,7 @@
 				<span class="vfd-glow-strong" style="color: rgb(var(--vfd));">▌</span>
 				<span class="text-xs uppercase tracking-wider" style="color: rgba(var(--vfd), 0.6);">System Log</span>
 			</div>
-			<div class="p-4 text-xs overflow-x-auto" bind:this={logContainer}>
+			<div class="pl-4 py-4 text-xs overflow-x-auto" bind:this={logContainer}>
 				{#if checks.length === 0}
 					<div style="color: rgba(var(--vfd), 0.4);">No check history available yet.</div>
 				{:else}
@@ -377,7 +379,7 @@
 						{@const statusColor = check.status === 'ok' ? 'rgb(var(--vfd))' : 'rgb(220, 38, 38)'}
 						{@const buildParts = garbleFieldParts(check.buildNumber ? formatBuildNumber(check.buildNumber) : undefined, buildWidth, seed, seedModifier)}
 						{@const hashParts = garbleFieldParts(check.manifestHash, hashWidth, seed + 50, seedModifier)}
-						<div class="py-0.5 whitespace-nowrap">
+						<div class="py-0.5 pr-4 whitespace-nowrap">
 							<span style="color: rgba(var(--vfd), 0.4);">[{formatLogTime(check.checkedAt)}]</span>
 							<span style="color: {statusColor}; text-shadow: var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 6px {check.status === 'ok' ? 'rgba(var(--vfd), 0.5)' : 'rgba(220, 38, 38, 0.5)'};">{check.status.toUpperCase().padStart(3)}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
