@@ -21,7 +21,7 @@ cd web
 bun install           # Install dependencies
 bun run dev           # Dev server
 bun run build         # Production build
-bun run preview       # Preview production build locally (via wrangler)
+bun run preview       # Preview production build locally
 bun run check         # TypeScript/Svelte type checking
 ```
 
@@ -32,3 +32,7 @@ bun run check         # TypeScript/Svelte type checking
 - `data.json` - Build history with `firstSeenAt`, `lastSeenAt`, and raw config for each build
 - `.github/workflows/check.yaml` - Hourly cron job that runs scraper and auto-commits changes
 - `web/` - SvelteKit 2 + Svelte 5 + Tailwind v4, prerendered static site
+
+## Workflow Preferences
+
+- Do NOT automatically run dev servers (`bun run dev`) - User will run these manually

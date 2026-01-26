@@ -255,9 +255,9 @@
 			class="border px-4 py-2 grid grid-cols-3 items-center text-xs uppercase tracking-wider mb-6"
 			style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.05);"
 		>
-			<span style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.6);">[ SYSTEM MONITOR ]</span>
-			<span class="text-center" style="color: rgba(var(--vfd), 0.7); text-shadow: 0 0 6px rgba(var(--vfd), 0.4);">◈ {formatRegion(region)}</span>
-			<span class="text-right" style="color: rgba(var(--vfd), 0.5);">BUILD TRACKER v0.1</span>
+			<span class="vfd-glow-strong" style="color: rgb(var(--vfd));">[ SYSTEM MONITOR ]</span>
+			<span class="text-center vfd-glow-medium" style="color: rgba(var(--vfd), 0.7);">◈ {formatRegion(region)}</span>
+			<span class="text-right" style="color: rgba(var(--vfd), 0.5);">AZURE AI FOUNDRY BUILD TRACKER v0.1</span>
 		</div>
 
 		<!-- Main display -->
@@ -273,8 +273,8 @@
 
 			<div class="text-center">
 				<p
-					class="text-sm uppercase tracking-[0.3em] mb-4"
-					style="color: rgba(var(--vfd), 0.6); text-shadow: 0 0 10px rgba(var(--vfd), 0.3);"
+					class="text-sm uppercase tracking-[0.3em] mb-4 vfd-glow-soft"
+					style="color: rgba(var(--vfd), 0.6);"
 				>
 					Days Since Last Build
 				</p>
@@ -291,16 +291,16 @@
 					</div>
 					<!-- Main number -->
 					<div
-						class="relative text-[10rem] md:text-[14rem] font-bold leading-none tracking-tight"
-						style="color: rgb(var(--vfd)); text-shadow: 0 0 20px rgba(var(--vfd), 0.8), 0 0 40px rgba(var(--vfd), 0.4), 0 0 80px rgba(var(--vfd), 0.2);"
+						class="relative text-[10rem] md:text-[14rem] font-bold leading-none tracking-tight vfd-glow-multilayer"
+						style="color: rgb(var(--vfd));"
 					>
 						{days.toString().padStart(3, '0')}
 					</div>
 				</div>
 
 				<p
-					class="text-sm uppercase tracking-[0.2em] mt-4"
-					style="color: rgba(var(--vfd), 0.6); text-shadow: 0 0 10px rgba(var(--vfd), 0.3);"
+					class="text-sm uppercase tracking-[0.2em] mt-4 vfd-glow-soft"
+					style="color: rgba(var(--vfd), 0.6);"
 				>
 					{days === 1 ? 'Day' : 'Days'} Elapsed
 				</p>
@@ -315,7 +315,7 @@
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
 				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Latest Build</p>
-				<p class="text-lg font-bold" style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.5);">{formatBuildNumber(latestBuild.buildNumber)}</p>
+				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{formatBuildNumber(latestBuild.buildNumber)}</p>
 			</div>
 
 			<!-- Manifest hash -->
@@ -324,7 +324,7 @@
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
 				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Manifest Hash</p>
-				<p class="text-lg font-bold" style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.5);">{latestBuild.manifestHash}</p>
+				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{latestBuild.manifestHash}</p>
 			</div>
 
 			<!-- Last check -->
@@ -333,7 +333,7 @@
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
 				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Last Check</p>
-				<p class="text-lg font-bold" style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.5);">{formatDateTime(lastUpdatedAt)}</p>
+				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{formatDateTime(lastUpdatedAt)}</p>
 			</div>
 		</div>
 
@@ -341,12 +341,12 @@
 		<div class="mt-6 flex items-center justify-center gap-4 text-xs uppercase tracking-wider">
 			<span style="color: rgba(var(--vfd), 0.4);">Last Change:</span>
 			<span
-				style="color: {changeType === 'build' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'build' || changeType === 'both' ? '0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
+				style="color: {changeType === 'build' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'build' || changeType === 'both' ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
 			>
 				▲ BUILD
 			</span>
 			<span
-				style="color: {changeType === 'hash' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'hash' || changeType === 'both' ? '0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
+				style="color: {changeType === 'hash' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'hash' || changeType === 'both' ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
 			>
 				▲ MANIFEST
 			</span>
@@ -361,7 +361,7 @@
 				class="px-4 py-2 border-b flex items-center gap-2"
 				style="border-color: rgba(var(--vfd), 0.3);"
 			>
-				<span style="color: rgb(var(--vfd)); text-shadow: 0 0 8px rgba(var(--vfd), 0.6);">▌</span>
+				<span class="vfd-glow-strong" style="color: rgb(var(--vfd));">▌</span>
 				<span class="text-xs uppercase tracking-wider" style="color: rgba(var(--vfd), 0.6);">System Log</span>
 			</div>
 			<div class="p-4 text-xs overflow-x-auto" bind:this={logContainer}>
@@ -379,15 +379,15 @@
 						{@const hashParts = garbleFieldParts(check.manifestHash, hashWidth, seed + 50, seedModifier)}
 						<div class="py-0.5 whitespace-nowrap">
 							<span style="color: rgba(var(--vfd), 0.4);">[{formatLogTime(check.checkedAt)}]</span>
-							<span style="color: {statusColor}; text-shadow: 0 0 6px {check.status === 'ok' ? 'rgba(var(--vfd), 0.5)' : 'rgba(220, 38, 38, 0.5)'};">{check.status.toUpperCase().padStart(3)}</span>
+							<span style="color: {statusColor}; text-shadow: var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 6px {check.status === 'ok' ? 'rgba(var(--vfd), 0.5)' : 'rgba(220, 38, 38, 0.5)'};">{check.status.toUpperCase().padStart(3)}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: {regionChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.6)'}; text-shadow: {regionChanged ? '0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{shortRegion(check.region)}</span>
+							<span style="color: {regionChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.6)'}; text-shadow: {regionChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{shortRegion(check.region)}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: rgba(var(--vfd), 0.25);">{buildParts.left}</span><span style="color: {buildChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {buildChanged ? '0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{buildParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{buildParts.right}</span>
+							<span style="color: rgba(var(--vfd), 0.25);">{buildParts.left}</span><span style="color: {buildChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {buildChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{buildParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{buildParts.right}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: rgba(var(--vfd), 0.25);">{hashParts.left}</span><span style="color: {hashChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {hashChanged ? '0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{hashParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{hashParts.right}</span>
+							<span style="color: rgba(var(--vfd), 0.25);">{hashParts.left}</span><span style="color: {hashChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {hashChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{hashParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{hashParts.right}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: {check.isNewBuild ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {check.isNewBuild ? '0 0 8px rgba(var(--vfd), 0.8)' : 'none'};">{check.isNewBuild ? '*NEW' : '░░░░'}</span>
+							<span style="color: {check.isNewBuild ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {check.isNewBuild ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.8)' : 'none'};">{check.isNewBuild ? '*NEW' : '░░░░'}</span>
 							{#if check.errorMessage}
 								<span style="color: rgba(220, 38, 38, 0.7);"> {check.errorMessage}</span>
 							{/if}
@@ -412,6 +412,44 @@
 </div>
 
 <style>
+	/* Chromatic aberration VFD glow utilities */
+	.vfd-glow-strong {
+		text-shadow:
+			var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)),
+			var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)),
+			0 0 8px rgba(var(--vfd), 0.6);
+	}
+
+	.vfd-glow-medium {
+		text-shadow:
+			var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)),
+			var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)),
+			0 0 6px rgba(var(--vfd), 0.4);
+	}
+
+	.vfd-glow-soft {
+		text-shadow:
+			var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)),
+			var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)),
+			0 0 10px rgba(var(--vfd), 0.3);
+	}
+
+	.vfd-glow-multilayer {
+		text-shadow:
+			var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)),
+			var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)),
+			0 0 20px rgba(var(--vfd), 0.8),
+			0 0 40px rgba(var(--vfd), 0.4),
+			0 0 80px rgba(var(--vfd), 0.2);
+	}
+
+	.vfd-glow-panel {
+		text-shadow:
+			var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)),
+			var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)),
+			0 0 8px rgba(var(--vfd), 0.5);
+	}
+
 	@keyframes display-glitch {
 		0%, 100% {
 			transform: none;
@@ -475,41 +513,65 @@
 
 	@keyframes chromatic-aberration {
 		0%, 100% {
-			text-shadow: none;
+			--chroma-r: 0px;
+			--chroma-c: 0px;
+			--chroma-opacity: 0;
 		}
 		5%, 84% {
-			text-shadow: none;
+			--chroma-r: 0px;
+			--chroma-c: 0px;
+			--chroma-opacity: 0;
 		}
 		/* RGB channel separation */
 		85% {
-			text-shadow: -2px 0 rgba(255, 0, 64, 0.75), 2px 0 rgba(0, 255, 255, 0.75);
+			--chroma-r: -2px;
+			--chroma-c: 2px;
+			--chroma-opacity: 0.75;
 		}
 		85.5% {
-			text-shadow: 3px 0 rgba(255, 0, 64, 0.8), -3px 0 rgba(0, 255, 255, 0.8);
+			--chroma-r: 3px;
+			--chroma-c: -3px;
+			--chroma-opacity: 0.75;
 		}
 		86% {
-			text-shadow: -4px 0 rgba(255, 0, 64, 0.7), 4px 0 rgba(0, 255, 255, 0.7);
+			--chroma-r: -4px;
+			--chroma-c: 4px;
+			--chroma-opacity: 0.75;
 		}
 		86.5% {
-			text-shadow: 2px 0 rgba(255, 0, 64, 0.85), -2px 0 rgba(0, 255, 255, 0.85);
+			--chroma-r: 2px;
+			--chroma-c: -2px;
+			--chroma-opacity: 0.75;
 		}
 		87% {
-			text-shadow: -3px 0 rgba(255, 0, 64, 0.65), 3px 0 rgba(0, 255, 255, 0.65);
+			--chroma-r: -3px;
+			--chroma-c: 3px;
+			--chroma-opacity: 0.75;
 		}
 		87.5% {
-			text-shadow: 1px 0 rgba(255, 0, 64, 0.6), -1px 0 rgba(0, 255, 255, 0.6);
+			--chroma-r: 1px;
+			--chroma-c: -1px;
+			--chroma-opacity: 0.75;
 		}
 		88% {
-			text-shadow: -2px 0 rgba(255, 0, 64, 0.5), 2px 0 rgba(0, 255, 255, 0.5);
+			--chroma-r: -2px;
+			--chroma-c: 2px;
+			--chroma-opacity: 0.75;
 		}
 		88.5% {
-			text-shadow: 1px 0 rgba(255, 0, 64, 0.4), -1px 0 rgba(0, 255, 255, 0.4);
+			--chroma-r: 1px;
+			--chroma-c: -1px;
+			--chroma-opacity: 0.75;
 		}
 		89% {
-			text-shadow: -1px 0 rgba(255, 0, 64, 0.25), 1px 0 rgba(0, 255, 255, 0.25);
+			--chroma-r: -1px;
+			--chroma-c: 1px;
+			--chroma-opacity: 0.75;
 		}
 		90% {
-			text-shadow: none;
+			--chroma-r: 0px;
+			--chroma-c: 0px;
+			--chroma-opacity: 0;
 		}
 	}
 
