@@ -2,6 +2,8 @@ name: Check latest build
 
 on:
   push:
+    paths-ignore:
+      - 'web/**'
   workflow_dispatch:
   schedule:
     # At minute 53.
