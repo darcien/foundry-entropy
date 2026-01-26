@@ -19,18 +19,24 @@
 	function calculateWidths() {
 		if (!logContainer) return;
 
-		// Measure character width using a test element
+		// Measure character width using a test element with the same font as the log
 		const testEl = document.createElement('span');
 		testEl.style.visibility = 'hidden';
 		testEl.style.position = 'absolute';
 		testEl.style.whiteSpace = 'pre';
+		// Inherit font from container (which has font-mono class)
 		testEl.textContent = '0'.repeat(100);
 		logContainer.appendChild(testEl);
 		const charWidth = testEl.offsetWidth / 100;
 		logContainer.removeChild(testEl);
 
+		// Sanity check: if charWidth is 0 or unreasonably small, skip this calculation
+		if (charWidth < 1) return;
+
 		// Calculate available width (container width minus padding)
 		const containerWidth = logContainer.clientWidth - 32;
+		if (containerWidth <= 0) return;
+
 		// Fixed chars: [time] (18) + status (3) + region (4) + separators (4*3=12) + NEW (4) = 41
 		const fixedChars = 41;
 		const availableChars = Math.floor(containerWidth / charWidth) - fixedChars;
@@ -43,10 +49,23 @@
 	$effect(() => {
 		if (!logContainer) return;
 
-		calculateWidths();
+		// Wait for fonts to load and layout to complete
+		const setup = async () => {
+			// Wait for fonts
+			await document.fonts.ready;
+
+			// Wait for next frame to ensure layout is done
+			await new Promise(resolve => requestAnimationFrame(resolve));
+
+			calculateWidths();
+		};
+
+		setup();
 
 		// Recalculate on resize
-		const resizeObserver = new ResizeObserver(() => calculateWidths());
+		const resizeObserver = new ResizeObserver(() => {
+			requestAnimationFrame(() => calculateWidths());
+		});
 		resizeObserver.observe(logContainer);
 
 		return () => resizeObserver.disconnect();
@@ -303,4 +322,185 @@
 			<span style="color: rgba(var(--vfd), 0.5);">Monitoring (Hopefully) Active</span>
 		</div>
 	</div>
+
+	<!-- CRT glitch interference overlay -->
+	<div class="glitch-bands pointer-events-none absolute inset-0 overflow-hidden"></div>
 </div>
+
+<style>
+	@keyframes display-glitch {
+		0%, 100% {
+			transform: none;
+			filter: none;
+			opacity: 1;
+		}
+		/* Calm period */
+		5%, 84% {
+			transform: none;
+			filter: none;
+			opacity: 1;
+		}
+		/* Glitch burst - horizontal shifts like v-sync issues */
+		85% {
+			transform: translateX(-4px);
+			filter: contrast(1.15) brightness(1.05);
+			opacity: 1;
+		}
+		85.5% {
+			transform: translateX(6px);
+			opacity: 0.9;
+		}
+		86% {
+			transform: translateX(-2px);
+			filter: contrast(0.95) brightness(1.1);
+			opacity: 1;
+		}
+		86.5% {
+			transform: translateX(3px);
+			opacity: 0.95;
+		}
+		87% {
+			transform: translateX(-5px);
+			filter: contrast(1.1);
+			opacity: 1;
+		}
+		87.5% {
+			transform: translateX(0);
+			opacity: 0.85;
+		}
+		88% {
+			transform: translateX(2px);
+			filter: brightness(1.08);
+			opacity: 1;
+		}
+		88.5% {
+			transform: translateX(-1px);
+			opacity: 1;
+		}
+		89% {
+			transform: none;
+			filter: contrast(1.05);
+			opacity: 1;
+		}
+		90% {
+			transform: none;
+			filter: none;
+			opacity: 1;
+		}
+	}
+
+	@keyframes chromatic-aberration {
+		0%, 100% {
+			text-shadow: none;
+		}
+		5%, 84% {
+			text-shadow: none;
+		}
+		/* RGB channel separation */
+		85% {
+			text-shadow: -2px 0 rgba(255, 0, 64, 0.75), 2px 0 rgba(0, 255, 255, 0.75);
+		}
+		85.5% {
+			text-shadow: 3px 0 rgba(255, 0, 64, 0.8), -3px 0 rgba(0, 255, 255, 0.8);
+		}
+		86% {
+			text-shadow: -4px 0 rgba(255, 0, 64, 0.7), 4px 0 rgba(0, 255, 255, 0.7);
+		}
+		86.5% {
+			text-shadow: 2px 0 rgba(255, 0, 64, 0.85), -2px 0 rgba(0, 255, 255, 0.85);
+		}
+		87% {
+			text-shadow: -3px 0 rgba(255, 0, 64, 0.65), 3px 0 rgba(0, 255, 255, 0.65);
+		}
+		87.5% {
+			text-shadow: 1px 0 rgba(255, 0, 64, 0.6), -1px 0 rgba(0, 255, 255, 0.6);
+		}
+		88% {
+			text-shadow: -2px 0 rgba(255, 0, 64, 0.5), 2px 0 rgba(0, 255, 255, 0.5);
+		}
+		88.5% {
+			text-shadow: 1px 0 rgba(255, 0, 64, 0.4), -1px 0 rgba(0, 255, 255, 0.4);
+		}
+		89% {
+			text-shadow: -1px 0 rgba(255, 0, 64, 0.25), 1px 0 rgba(0, 255, 255, 0.25);
+		}
+		90% {
+			text-shadow: none;
+		}
+	}
+
+	@keyframes scan-interference {
+		0%, 84% {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+		85% {
+			transform: translateY(0%);
+			opacity: 0.3;
+		}
+		86% {
+			transform: translateY(20%);
+			opacity: 0.5;
+		}
+		87% {
+			transform: translateY(40%);
+			opacity: 0.4;
+		}
+		88% {
+			transform: translateY(60%);
+			opacity: 0.6;
+		}
+		89% {
+			transform: translateY(80%);
+			opacity: 0.3;
+		}
+		90%, 100% {
+			transform: translateY(100%);
+			opacity: 0;
+		}
+	}
+
+
+	:global(.glitch-bands::before),
+	:global(.glitch-bands::after) {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(to bottom,
+			transparent,
+			rgba(233, 114, 37, 0.4) 40%,
+			rgba(233, 114, 37, 0.6) 50%,
+			rgba(233, 114, 37, 0.4) 60%,
+			transparent);
+		box-shadow: 0 0 8px rgba(233, 114, 37, 0.5);
+		animation: scan-interference 12s steps(1) infinite;
+	}
+
+	:global(.glitch-bands::after) {
+		height: 2px;
+		background: linear-gradient(to bottom,
+			transparent,
+			rgba(233, 114, 37, 0.3) 50%,
+			transparent);
+		animation-delay: 0.5s;
+	}
+
+	/* Apply glitch effects to main content */
+	:global(.relative.z-10) {
+		animation: display-glitch 12s steps(1) infinite, chromatic-aberration 12s steps(1) infinite;
+	}
+
+	/* Respect reduced motion preference */
+	@media (prefers-reduced-motion: reduce) {
+		:global(.relative.z-10) {
+			animation: none;
+		}
+		:global(.glitch-bands::before),
+		:global(.glitch-bands::after) {
+			animation: none;
+			opacity: 0;
+		}
+	}
+</style>
