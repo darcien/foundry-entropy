@@ -62,7 +62,7 @@
 			await document.fonts.ready;
 
 			// Wait for next frame to ensure layout is done
-			await new Promise(resolve => requestAnimationFrame(resolve));
+			await new Promise((resolve) => requestAnimationFrame(resolve));
 
 			calculateWidths();
 		};
@@ -102,7 +102,7 @@
 		let startTime = 0;
 		const CYCLE_DURATION = 12000; // 12 seconds
 		const GLITCH_START = 0.85; // 85% of cycle
-		const GLITCH_END = 0.90; // 90% of cycle
+		const GLITCH_END = 0.9; // 90% of cycle
 		const MODIFIER_INTERVAL = 80; // Update every ~80ms during glitch
 
 		const animate = (timestamp: number) => {
@@ -252,7 +252,12 @@
 		return result;
 	}
 
-	function garbleFieldParts(value: string | undefined, width: number, seed: number, modifier: number = 0): { left: string; value: string; right: string } {
+	function garbleFieldParts(
+		value: string | undefined,
+		width: number,
+		seed: number,
+		modifier: number = 0
+	): { left: string; value: string; right: string } {
 		const effectiveSeed = seed + modifier;
 		if (!value) return { left: randomGarble(width, effectiveSeed), value: '', right: '' };
 		if (value.length >= width) return { left: '', value: value.slice(0, width), right: '' };
@@ -274,40 +279,60 @@
 </svelte:head>
 
 <div
-	class="min-h-screen bg-neutral-950 font-mono flex items-center justify-center p-6 relative overflow-hidden"
+	class="relative flex min-h-screen items-center justify-center overflow-hidden bg-neutral-950 p-6 font-mono"
 	style="--vfd: 233, 114, 37;"
 >
 	<!-- Scanline overlay -->
-	<div class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.3)_2px,rgba(0,0,0,0.3)_4px)]"></div>
+	<div
+		class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.3)_2px,rgba(0,0,0,0.3)_4px)]"
+	></div>
 
 	<!-- Subtle vignette -->
-	<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
+	<div
+		class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"
+	></div>
 
-	<div class="relative z-10 w-full max-w-4xl flex flex-col gap-6">
+	<div class="relative z-10 flex w-full max-w-4xl flex-col gap-6">
 		<!-- Top status bar -->
 		<div
-			class="border px-4 py-2 grid grid-cols-3 items-center text-xs uppercase tracking-wider"
+			class="grid grid-cols-3 items-center border px-4 py-2 text-xs tracking-wider uppercase"
 			style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.05);"
 		>
 			<span class="vfd-glow-strong" style="color: rgb(var(--vfd));">[ SYSTEM MONITOR ]</span>
-			<span class="text-center vfd-glow-medium" style="color: rgba(var(--vfd), 0.7);">◈ {formatRegion(region)}</span>
-			<span class="text-right" style="color: rgba(var(--vfd), 0.5);">AZURE AI FOUNDRY BUILD TRACKER v0.1</span>
+			<span class="vfd-glow-medium text-center" style="color: rgba(var(--vfd), 0.7);"
+				>◈ {formatRegion(region)}</span
+			>
+			<span class="text-right" style="color: rgba(var(--vfd), 0.5);"
+				>AZURE AI FOUNDRY BUILD TRACKER v0.1</span
+			>
 		</div>
 
 		<!-- Main display -->
 		<div
-			class="p-8 md:p-12 relative border"
+			class="relative border p-8 md:p-12"
 			style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 		>
 			<!-- Corner accents -->
-			<div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2" style="border-color: rgba(var(--vfd), 0.6);"></div>
-			<div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2" style="border-color: rgba(var(--vfd), 0.6);"></div>
-			<div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2" style="border-color: rgba(var(--vfd), 0.6);"></div>
-			<div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2" style="border-color: rgba(var(--vfd), 0.6);"></div>
+			<div
+				class="absolute top-0 left-0 h-6 w-6 border-t-2 border-l-2"
+				style="border-color: rgba(var(--vfd), 0.6);"
+			></div>
+			<div
+				class="absolute top-0 right-0 h-6 w-6 border-t-2 border-r-2"
+				style="border-color: rgba(var(--vfd), 0.6);"
+			></div>
+			<div
+				class="absolute bottom-0 left-0 h-6 w-6 border-b-2 border-l-2"
+				style="border-color: rgba(var(--vfd), 0.6);"
+			></div>
+			<div
+				class="absolute right-0 bottom-0 h-6 w-6 border-r-2 border-b-2"
+				style="border-color: rgba(var(--vfd), 0.6);"
+			></div>
 
 			<div class="text-center">
 				<p
-					class="text-sm uppercase tracking-[0.3em] mb-4 vfd-glow-soft"
+					class="vfd-glow-soft mb-4 text-sm tracking-[0.3em] uppercase"
 					style="color: rgba(var(--vfd), 0.6);"
 				>
 					Days Since Last Build
@@ -317,7 +342,7 @@
 				<div class="relative inline-block">
 					<!-- Glow layer (behind) -->
 					<div
-						class="absolute inset-0 text-[10rem] md:text-[14rem] font-bold leading-none blur-md select-none"
+						class="absolute inset-0 text-[10rem] leading-none font-bold blur-md select-none md:text-[14rem]"
 						style="color: rgba(var(--vfd), 0.3);"
 						aria-hidden="true"
 					>
@@ -325,7 +350,7 @@
 					</div>
 					<!-- Main number -->
 					<div
-						class="relative text-[10rem] md:text-[14rem] font-bold leading-none tracking-tight vfd-glow-multilayer"
+						class="vfd-glow-multilayer relative text-[10rem] leading-none font-bold tracking-tight md:text-[14rem]"
 						style="color: rgb(var(--vfd));"
 					>
 						{days.toString().padStart(3, '0')}
@@ -333,7 +358,7 @@
 				</div>
 
 				<p
-					class="text-sm uppercase tracking-[0.2em] mt-4 vfd-glow-soft"
+					class="vfd-glow-soft mt-4 text-sm tracking-[0.2em] uppercase"
 					style="color: rgba(var(--vfd), 0.6);"
 				>
 					{days === 1 ? 'Day' : 'Days'} Elapsed
@@ -342,14 +367,18 @@
 		</div>
 
 		<!-- Bottom info panels -->
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			<!-- Build info -->
 			<div
 				class="border px-4 py-3"
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
-				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Latest Build</p>
-				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{formatBuildNumber(latestBuild.buildNumber)}</p>
+				<p class="mb-1 text-[10px] tracking-widest uppercase" style="color: rgba(var(--vfd), 0.4);">
+					Latest Build
+				</p>
+				<p class="vfd-glow-panel text-lg font-bold" style="color: rgb(var(--vfd));">
+					{formatBuildNumber(latestBuild.buildNumber)}
+				</p>
 			</div>
 
 			<!-- Manifest hash -->
@@ -357,8 +386,12 @@
 				class="border px-4 py-3"
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
-				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Manifest Hash</p>
-				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{latestBuild.manifestHash}</p>
+				<p class="mb-1 text-[10px] tracking-widest uppercase" style="color: rgba(var(--vfd), 0.4);">
+					Manifest Hash
+				</p>
+				<p class="vfd-glow-panel text-lg font-bold" style="color: rgb(var(--vfd));">
+					{latestBuild.manifestHash}
+				</p>
 			</div>
 
 			<!-- Last check -->
@@ -366,21 +399,33 @@
 				class="border px-4 py-3"
 				style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 			>
-				<p class="text-[10px] uppercase tracking-widest mb-1" style="color: rgba(var(--vfd), 0.4);">Last Check</p>
-				<p class="text-lg font-bold vfd-glow-panel" style="color: rgb(var(--vfd));">{formatDateTime(lastUpdatedAt)}</p>
+				<p class="mb-1 text-[10px] tracking-widest uppercase" style="color: rgba(var(--vfd), 0.4);">
+					Last Check
+				</p>
+				<p class="vfd-glow-panel text-lg font-bold" style="color: rgb(var(--vfd));">
+					{formatDateTime(lastUpdatedAt)}
+				</p>
 			</div>
 		</div>
 
 		<!-- Change indicator -->
-		<div class="flex items-center justify-center gap-4 text-xs uppercase tracking-wider">
+		<div class="flex items-center justify-center gap-4 text-xs tracking-wider uppercase">
 			<span style="color: rgba(var(--vfd), 0.4);">Last Change:</span>
 			<span
-				style="color: {changeType === 'build' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'build' || changeType === 'both' ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
+				style="color: {changeType === 'build' || changeType === 'both'
+					? 'rgb(var(--vfd))'
+					: 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'build' || changeType === 'both'
+					? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)'
+					: 'none'};"
 			>
 				▲ BUILD
 			</span>
 			<span
-				style="color: {changeType === 'hash' || changeType === 'both' ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'hash' || changeType === 'both' ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};"
+				style="color: {changeType === 'hash' || changeType === 'both'
+					? 'rgb(var(--vfd))'
+					: 'rgba(var(--vfd), 0.2)'}; text-shadow: {changeType === 'hash' || changeType === 'both'
+					? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)'
+					: 'none'};"
 			>
 				▲ MANIFEST
 			</span>
@@ -392,13 +437,15 @@
 			style="border-color: rgba(var(--vfd), 0.3); background-color: rgba(var(--vfd), 0.03);"
 		>
 			<div
-				class="px-4 py-2 border-b flex items-center gap-2"
+				class="flex items-center gap-2 border-b px-4 py-2"
 				style="border-color: rgba(var(--vfd), 0.3);"
 			>
 				<span class="vfd-glow-strong" style="color: rgb(var(--vfd));">▌</span>
-				<span class="text-xs uppercase tracking-wider" style="color: rgba(var(--vfd), 0.6);">System Log</span>
+				<span class="text-xs tracking-wider uppercase" style="color: rgba(var(--vfd), 0.6);"
+					>System Log</span
+				>
 			</div>
-			<div class="pl-4 py-4 text-xs overflow-x-auto" bind:this={logContainer}>
+			<div class="overflow-x-auto py-4 pl-4 text-xs" bind:this={logContainer}>
 				{#if checks.length === 0}
 					<div style="color: rgba(var(--vfd), 0.4);">No check history available yet.</div>
 				{:else}
@@ -409,19 +456,58 @@
 						{@const hashChanged = prevCheck && check.manifestHash !== prevCheck.manifestHash}
 						{@const regionChanged = prevCheck && check.region !== prevCheck.region}
 						{@const statusColor = check.status === 'ok' ? 'rgb(var(--vfd))' : 'rgb(220, 38, 38)'}
-						{@const buildParts = garbleFieldParts(check.buildNumber ? formatBuildNumber(check.buildNumber) : undefined, buildWidth, seed, seedModifier)}
-						{@const hashParts = garbleFieldParts(check.manifestHash, hashWidth, seed + 50, seedModifier)}
+						{@const buildParts = garbleFieldParts(
+							check.buildNumber ? formatBuildNumber(check.buildNumber) : undefined,
+							buildWidth,
+							seed,
+							seedModifier
+						)}
+						{@const hashParts = garbleFieldParts(
+							check.manifestHash,
+							hashWidth,
+							seed + 50,
+							seedModifier
+						)}
 						<div class="py-0.5 pr-4 whitespace-nowrap">
 							<span style="color: rgba(var(--vfd), 0.4);">[{formatLogTime(check.checkedAt)}]</span>
-							<span style="color: {statusColor}; text-shadow: var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 6px {check.status === 'ok' ? 'rgba(var(--vfd), 0.5)' : 'rgba(220, 38, 38, 0.5)'};">{check.status.toUpperCase().padStart(3)}</span>
+							<span
+								style="color: {statusColor}; text-shadow: var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 6px {check.status ===
+								'ok'
+									? 'rgba(var(--vfd), 0.5)'
+									: 'rgba(220, 38, 38, 0.5)'};">{check.status.toUpperCase().padStart(3)}</span
+							>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: {regionChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.6)'}; text-shadow: {regionChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{shortRegion(check.region)}</span>
+							<span
+								style="color: {regionChanged
+									? 'rgb(var(--vfd))'
+									: 'rgba(var(--vfd), 0.6)'}; text-shadow: {regionChanged
+									? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)'
+									: 'none'};">{shortRegion(check.region)}</span
+							>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: rgba(var(--vfd), 0.25);">{buildParts.left}</span><span style="color: {buildChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {buildChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{buildParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{buildParts.right}</span>
+							<span style="color: rgba(var(--vfd), 0.25);">{buildParts.left}</span><span
+								style="color: {buildChanged
+									? 'rgb(var(--vfd))'
+									: 'rgba(var(--vfd), 0.7)'}; text-shadow: {buildChanged
+									? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)'
+									: 'none'};">{buildParts.value}</span
+							><span style="color: rgba(var(--vfd), 0.25);">{buildParts.right}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: rgba(var(--vfd), 0.25);">{hashParts.left}</span><span style="color: {hashChanged ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.7)'}; text-shadow: {hashChanged ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)' : 'none'};">{hashParts.value}</span><span style="color: rgba(var(--vfd), 0.25);">{hashParts.right}</span>
+							<span style="color: rgba(var(--vfd), 0.25);">{hashParts.left}</span><span
+								style="color: {hashChanged
+									? 'rgb(var(--vfd))'
+									: 'rgba(var(--vfd), 0.7)'}; text-shadow: {hashChanged
+									? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.6)'
+									: 'none'};">{hashParts.value}</span
+							><span style="color: rgba(var(--vfd), 0.25);">{hashParts.right}</span>
 							<span style="color: rgba(var(--vfd), 0.3);"> │ </span>
-							<span style="color: {check.isNewBuild ? 'rgb(var(--vfd))' : 'rgba(var(--vfd), 0.2)'}; text-shadow: {check.isNewBuild ? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.8)' : 'none'};">{check.isNewBuild ? '*NEW' : '░░░░'}</span>
+							<span
+								style="color: {check.isNewBuild
+									? 'rgb(var(--vfd))'
+									: 'rgba(var(--vfd), 0.2)'}; text-shadow: {check.isNewBuild
+									? 'var(--chroma-r, 0px) 0 rgba(255, 0, 64, var(--chroma-opacity, 0)), var(--chroma-c, 0px) 0 rgba(0, 255, 255, var(--chroma-opacity, 0)), 0 0 8px rgba(var(--vfd), 0.8)'
+									: 'none'};">{check.isNewBuild ? '*NEW' : '░░░░'}</span
+							>
 							{#if check.errorMessage}
 								<span style="color: rgba(220, 38, 38, 0.7);"> {check.errorMessage}</span>
 							{/if}
@@ -432,9 +518,9 @@
 		</div>
 
 		<!-- Status indicator -->
-		<div class="flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+		<div class="flex items-center justify-center gap-2 text-xs tracking-wider uppercase">
 			<span
-				class="w-2 h-2 rounded-full animate-pulse"
+				class="h-2 w-2 animate-pulse rounded-full"
 				style="background-color: rgb(var(--vfd)); box-shadow: 0 0 8px rgba(var(--vfd), 0.8);"
 			></span>
 			<span style="color: rgba(var(--vfd), 0.5);">Monitoring (Hopefully) Active</span>
@@ -485,13 +571,15 @@
 	}
 
 	@keyframes display-glitch {
-		0%, 100% {
+		0%,
+		100% {
 			transform: none;
 			filter: none;
 			opacity: 1;
 		}
 		/* Calm period */
-		5%, 84% {
+		5%,
+		84% {
 			transform: none;
 			filter: none;
 			opacity: 1;
@@ -546,12 +634,14 @@
 	}
 
 	@keyframes chromatic-aberration {
-		0%, 100% {
+		0%,
+		100% {
 			--chroma-r: 0px;
 			--chroma-c: 0px;
 			--chroma-opacity: 0;
 		}
-		5%, 84% {
+		5%,
+		84% {
 			--chroma-r: 0px;
 			--chroma-c: 0px;
 			--chroma-opacity: 0;
@@ -610,7 +700,8 @@
 	}
 
 	@keyframes scan-interference {
-		0%, 84% {
+		0%,
+		84% {
 			transform: translateY(-100%);
 			opacity: 0;
 		}
@@ -634,12 +725,12 @@
 			transform: translateY(80%);
 			opacity: 0.3;
 		}
-		90%, 100% {
+		90%,
+		100% {
 			transform: translateY(100%);
 			opacity: 0;
 		}
 	}
-
 
 	:global(.glitch-bands::before),
 	:global(.glitch-bands::after) {
@@ -648,28 +739,29 @@
 		left: 0;
 		right: 0;
 		height: 3px;
-		background: linear-gradient(to bottom,
+		background: linear-gradient(
+			to bottom,
 			transparent,
 			rgba(233, 114, 37, 0.4) 40%,
 			rgba(233, 114, 37, 0.6) 50%,
 			rgba(233, 114, 37, 0.4) 60%,
-			transparent);
+			transparent
+		);
 		box-shadow: 0 0 8px rgba(233, 114, 37, 0.5);
 		animation: scan-interference 12s steps(1) infinite;
 	}
 
 	:global(.glitch-bands::after) {
 		height: 2px;
-		background: linear-gradient(to bottom,
-			transparent,
-			rgba(233, 114, 37, 0.3) 50%,
-			transparent);
+		background: linear-gradient(to bottom, transparent, rgba(233, 114, 37, 0.3) 50%, transparent);
 		animation-delay: 0.5s;
 	}
 
 	/* Apply glitch effects to main content */
 	:global(.relative.z-10) {
-		animation: display-glitch 12s steps(1) infinite, chromatic-aberration 12s steps(1) infinite;
+		animation:
+			display-glitch 12s steps(1) infinite,
+			chromatic-aberration 12s steps(1) infinite;
 	}
 
 	/* Respect reduced motion preference */

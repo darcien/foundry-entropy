@@ -34,9 +34,7 @@ function parseBuildNumber(buildNumber: string): ParsedBuild {
 	};
 
 	return {
-		sprintDate: new Date(
-			Date.UTC(parseInt(sprintYear), months[sprintMonth], parseInt(sprintDay))
-		),
+		sprintDate: new Date(Date.UTC(parseInt(sprintYear), months[sprintMonth], parseInt(sprintDay))),
 		buildDate: new Date(
 			Date.UTC(parseInt(buildYear), parseInt(buildMonth) - 1, parseInt(buildDay))
 		),
@@ -49,8 +47,8 @@ export const load: PageLoad = () => {
 	const data = dataJson as unknown as Data;
 
 	// Sort builds by lastSeenAt (most recent first)
-	const sortedBuilds = data.builds.toSorted((a, b) =>
-		new Date(b.lastSeenAt).getTime() - new Date(a.lastSeenAt).getTime()
+	const sortedBuilds = data.builds.toSorted(
+		(a, b) => new Date(b.lastSeenAt).getTime() - new Date(a.lastSeenAt).getTime()
 	);
 
 	// Get the most recent build (first in sorted array)
