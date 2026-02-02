@@ -239,6 +239,17 @@
 		class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"
 	></div>
 
+	<!-- Particle field -->
+	<div class="particles pointer-events-none absolute inset-0">
+		{#each Array(30) as _, i}
+			<div
+				class="particle"
+				style="left: {(i * 17 + i * i * 3) % 100}%; animation-delay: {(i * 0.7 + i * i * 0.1) %
+					12}s;"
+			></div>
+		{/each}
+	</div>
+
 	<div class="relative z-10 mx-auto w-full max-w-7xl space-y-4">
 		<!-- Header bar -->
 		<div
@@ -1158,12 +1169,88 @@
 			chromatic-aberration 12s steps(1) infinite;
 	}
 
+	/* Particle field animations */
+	.particle {
+		position: absolute;
+		width: 4px;
+		height: 4px;
+		background: rgb(var(--vfd));
+		border-radius: 50%;
+		opacity: 0;
+		animation: float 12s ease-in-out infinite;
+		box-shadow: 0 0 8px rgba(var(--vfd), 1);
+		bottom: 0;
+	}
+
+	@keyframes float {
+		0% {
+			transform: translateY(0) translateX(0) rotate(0deg);
+			opacity: 0;
+		}
+		5% {
+			opacity: 0.8;
+		}
+		25% {
+			transform: translateY(-25vh) translateX(-20px) rotate(90deg);
+		}
+		50% {
+			transform: translateY(-50vh) translateX(40px) rotate(180deg);
+		}
+		75% {
+			transform: translateY(-75vh) translateX(-10px) rotate(270deg);
+		}
+		95% {
+			opacity: 0.7;
+		}
+		100% {
+			transform: translateY(-100vh) translateX(30px) rotate(360deg);
+			opacity: 0;
+		}
+	}
+
+	.particle:nth-child(odd) {
+		animation-name: float-chaotic;
+	}
+
+	@keyframes float-chaotic {
+		0% {
+			transform: translateY(0) translateX(0) rotate(0deg);
+			opacity: 0;
+		}
+		5% {
+			opacity: 0.8;
+		}
+		20% {
+			transform: translateY(-20vh) translateX(50px) rotate(-45deg);
+		}
+		40% {
+			transform: translateY(-40vh) translateX(-30px) rotate(135deg);
+		}
+		60% {
+			transform: translateY(-60vh) translateX(60px) rotate(-90deg);
+		}
+		80% {
+			transform: translateY(-80vh) translateX(-20px) rotate(225deg);
+		}
+		95% {
+			opacity: 0.7;
+		}
+		100% {
+			transform: translateY(-100vh) translateX(40px) rotate(360deg);
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		:global(.relative.z-10) {
 			animation: none;
 		}
 		:global(.glitch-bands::before),
 		:global(.glitch-bands::after) {
+			animation: none;
+			opacity: 0;
+		}
+		.particle {
 			animation: none;
 			opacity: 0;
 		}
