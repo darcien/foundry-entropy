@@ -240,7 +240,7 @@
 	></div>
 
 	<!-- Particle field -->
-	<div class="particles pointer-events-none absolute inset-0">
+	<div class="particles pointer-events-none fixed inset-0">
 		{#each Array(30) as _, i}
 			<div
 				class="particle"
