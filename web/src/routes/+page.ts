@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types';
 import dataJson from '../../../data.json';
-import type { Data, FoundryBuild } from '../../../types';
+import type { Data, FoundryBuild } from '$lib/types';
 
 const TARGET_REGION = 'eastus2';
 

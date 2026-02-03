@@ -721,7 +721,7 @@
 								</div>
 							{/if}
 
-							{#if data.currentBuild.lifespanHours > data.longestBuild?.lifespanHours * 0.9}
+							{#if data.longestBuild && data.currentBuild.lifespanHours > data.longestBuild.lifespanHours * 0.9}
 								<div class="flex gap-2">
 									<span style="color: rgb(234, 179, 8);">▲</span>
 									<span style="color: rgba(var(--vfd), 0.7);">Build defying entropy curve</span>
