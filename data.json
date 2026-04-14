@@ -1,6 +1,51 @@
 {
-  "lastUpdatedAt": "2026-04-14T19:54:13.190Z",
+  "lastUpdatedAt": "2026-04-14T21:37:39.428Z",
   "builds": [
+    {
+      "firstSeenAt": "2026-04-14T21:37:39.428Z",
+      "lastSeenAt": "2026-04-14T21:37:39.428Z",
+      "buildNumber": "AiFoundry-2026-Apr-13-2026-04-13.2",
+      "manifestHash": "c49dbf0c",
+      "rawConfig": {
+        "environment": {
+          "name": "production",
+          "region": "westus3",
+          "buildNumber": "AiFoundry-2026-Apr-13-2026-04-13.2"
+        },
+        "config": {
+          "adobeLaunchScriptUrl": "https://assets.adobedtm.com/5ef092d1efb5/37c427983516/launch-72b681d1f191.min.js",
+          "aiStudioUrl": "https://ai.azure.com",
+          "amlBackendEndpoint": "https://ai.azure.com",
+          "apimHostSuffix": ".services.ai.azure.com",
+          "appInsightsConnection": "InstrumentationKey=5e03b637-b7ee-42c3-b241-386e21c5435a;IngestionEndpoint=https://ai.azure.com/foundry-telemetry/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;ApplicationId=2fd43690-3cf2-47e0-8022-34c10f3c68a4",
+          "appOrigin": "https://ai.azure.com",
+          "azureManagementEndpoint": "https://management.azure.com",
+          "azurePortal": "https://portal.azure.com",
+          "catalog": "https://api.catalog.azureml.ms",
+          "cloudInstanceType": "public",
+          "cognitiveSearchEndpoint": "https://search.azure.com",
+          "cognitiveServicesEndpoint": "https://cognitiveservices.azure.com",
+          "cognitiveServicesSuffix": "cognitiveservices.azure.com",
+          "defaultAIProjectLocation": "eastus2",
+          "envName": "production",
+          "fabricDatahubEndpoint": "https://app.powerbi.com",
+          "fcpEndpoint": "https://ai.azure.com/api/{region}",
+          "feedbackApiUrl": "https://petrol.office.microsoft.com/v1/feedback",
+          "foundryDataPlaneSuffix": "services.ai.azure.com",
+          "graphEndpoint": "https://graph.microsoft.com",
+          "hephaestusAgentEndpoint": "https://ai.azure.com/api/eastus2/hephaestus-agent/v1.0",
+          "publisherEndpoint": "https://api.azureml.ms",
+          "logAnalytics": "https://api.loganalytics.io",
+          "modelCatalogFdCdn": "https://ai.azure.com/modelcache",
+          "oneDsTenantKey": "0167cd6e58dc4741b4a930a508eaacfc",
+          "openAISuffix": "openai.azure.com",
+          "searchEndpointSuffix": "search.windows.net",
+          "signupEnv": "prod"
+        },
+        "cloudApiHost": "https://westus3.api.azureml.ms",
+        "clientGenevaEnabled": false
+      }
+    },
     {
       "firstSeenAt": "2026-04-14T17:53:26.901Z",
       "lastSeenAt": "2026-04-14T19:54:13.189Z",
@@ -3892,6 +3937,15 @@
   ],
   "checks": [
     {
+      "checkedAt": "2026-04-14T21:37:39.428Z",
+      "status": "ok",
+      "durationMs": 255,
+      "httpStatus": 200,
+      "buildNumber": "AiFoundry-2026-Apr-13-2026-04-13.2",
+      "manifestHash": "c49dbf0c",
+      "isNewBuild": true
+    },
+    {
       "checkedAt": "2026-04-14T19:54:13.190Z",
       "status": "ok",
       "durationMs": 242,
@@ -5389,15 +5443,6 @@
       "checkedAt": "2026-04-05T03:47:50.123Z",
       "status": "ok",
       "durationMs": 223,
-      "httpStatus": 200,
-      "buildNumber": "AiFoundry-2026-Mar-31-2026-04-03.1",
-      "manifestHash": "8ca91cd3",
-      "isNewBuild": false
-    },
-    {
-      "checkedAt": "2026-04-05T00:03:25.135Z",
-      "status": "ok",
-      "durationMs": 158,
       "httpStatus": 200,
       "buildNumber": "AiFoundry-2026-Mar-31-2026-04-03.1",
       "manifestHash": "8ca91cd3",
